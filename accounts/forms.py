@@ -72,3 +72,23 @@ class UserUpdateForm(forms.ModelForm):
             "birthday",
             "phone",
         )
+        widgets = {
+            "avatar": forms.FileInput(
+                attrs={"class":"form-control"}
+            ),
+            "email": forms.EmailInput(
+                attrs={"class":"form-control"}
+            ),
+            "first_name": forms.TextInput(
+                attrs={"class":"form-control"}
+            ),
+            "last_name": forms.TextInput(
+                attrs={"class":"form-control"}
+            ),
+            "birthday": forms.DateInput(
+                attrs ={"class":"form-control", "type":"date"}
+            ),
+            "phone": forms.TextInput(
+                attrs={"class":"form-control"}
+            )   
+        }
