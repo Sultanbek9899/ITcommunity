@@ -1,9 +1,12 @@
 from ast import List
+from decimal import Decimal
+from shutil import ExecError
 from django.forms import forms
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView
+from django.shortcuts import get_object_or_404
+from django.views.generic import TemplateView, ListView, CreateView, DetailView
 # Create your views here.
 
 from posts.models import Post
@@ -59,6 +62,24 @@ class PostCreateView(CreateView):
 
 
 
-def get_post_list(request):
-    context = {}
-    context["posts"] = Post.objects.filter()
+# class PostDetailView(DetailView):
+#     template_name = "post_details.html"
+#     model = Post
+#     queryset = Post.objects.all()
+
+
+def get_post_detail(request, pk):
+    try:
+        post = Post.objects.get(id=pk) # pk - Primary Key
+    except Post.DoesNotExist:
+        return Http404()
+    context = {
+        "post":post
+    }
+    return render(request, "post_details.html", context)
+
+
+def delete_post(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    post.delete()
+    return redirect("my_posts")
