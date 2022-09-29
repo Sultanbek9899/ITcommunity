@@ -23,3 +23,14 @@ class PostCreateForm(forms.ModelForm):
             "image": "Изображение",
             "description": "Описание публикации"
         }
+
+
+class PostUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["description",]
+        widgets = {
+            "description": forms.Textarea(
+                attrs={"class":"form-control"}
+            )
+        }

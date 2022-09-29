@@ -12,11 +12,19 @@
         <div class="col-12 col-md-auto ms-auto d-print-none">
           <div class="d-flex">
           
+          {% if not post.is_archive %}
           <div class="me-3">
-            <a href="#" class="btn btn-secondary">
+            <a href="{% url 'archivate_post' post.id %}" class="btn btn-secondary">
                 Архивировать
             </a>
           </div>
+          {% else %}
+          <div class="me-3">
+            <a href="{% url 'unarchive_post' post.id %}" class="btn btn-secondary">
+                Разархивировать
+            </a>
+          </div>
+          {% endif %}
           
           <div class="me-3">
             <a href="" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-danger">
@@ -25,7 +33,7 @@
           </div>
 
           <div class="me-3">
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-report">
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-update">
               Редактировать
             </a>
           </div>
@@ -41,7 +49,7 @@
       <div class="content">
         <div class="w-50">
           <div class="card mb-3">
-            <img src="{{post.image.url}}" class="card-img-top" alt="...">
+            <img src="{{ post.image.url }}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">{{post.author.username }}</h5>
               <p class="card-text">{{post.description }}</p>
@@ -80,6 +88,33 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-update" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> Редактировать публикацию</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="{% url 'update_post' post.id %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{form}}
+              <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                  Закрыть
+                </a>
+                <button type="submit" class="btn btn-primary">
+                  Сохранить обновление
+                </button>
+              </div>
+          </form>
+      </div>
+      
     </div>
   </div>
 </div>
