@@ -20,3 +20,24 @@ class User(AbstractUser):
 
     def __str__(self):
         return str(self.username)
+
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+
+class Follow(models.Model):
+    to_user = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, related_name="follows", on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+        ordering = ["-created"]
+
+    def __str__(self):
+        return f"{self.from_user} подписался на {self.to_user}" 
+

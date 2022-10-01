@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-xl">
+    <!-- Page title -->
+    <div class="page-header d-print-none">
+      <div class="row g-2 align-items-center">
+        <div class="col">
+          <h2 class="page-title">
+            Результаты поиска по запросу:
+          </h2>
+          <div class="text mt-1">{{ search_text }}</div>
+        </div>
+        <!-- Page title actions -->
+        <div class="col-12 col-md-auto ms-auto d-print-none">
+          <div class="d-flex">
+            <form action="{% url 'user_search' %}" method="get"> 
+            <input name="query" type="search" class="form-control d-inline-block w-9 me-3" placeholder="Поиск пользователя..."/>
+        
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-xl">
+      <div class="row row-cards">
+        {% for user in object_list %}
+        <div class="col-md-6 col-lg-3">
+          <div class="card">
+            <div class="card-body p-4 text-center">
+              {% if user.avatar %}
+                <span class="avatar avatar-xl mb-3 avatar-rounded" style="background-image: url({{user.avatar.url}})"></span>
+              {% else %}
+              <span class="avatar avatar-xl mb-3 avatar-rounded" style="background-image: url(static/img/icons/user_profile.png)"></span>
+              {% endif %}
+              <h3 class="m-0 mb-1"><a href="#">{{ user.username }}</a></h3>
+              <div class="text">{{ user.full_name }}</div>
+              <div class="mt-3">
+              </div>
+            </div>
+            <div class="d-flex">
+              <a href="#" class="btn btn-success w-50"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checkbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <polyline points="9 11 12 14 20 6"></polyline>
+                    <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                 </svg>
+                Подписаться </a>
+              <a href="#" class="btn btn-info w-50"><!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-address-book" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z"></path>
+                    <path d="M10 16h6"></path>
+                    <circle cx="13" cy="11" r="2"></circle>
+                    <path d="M4 8h3"></path>
+                    <path d="M4 12h3"></path>
+                    <path d="M4 16h3"></path>
+                 </svg>
+                Подробнее</a>
+            </div>
+          </div>
+        </div>
+        
+        {% endfor %}
+
+      </div>
+      <div class="d-flex mt-4">
+        <ul class="pagination ms-auto">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+              <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>
+              prev
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item active"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">4</a></li>
+          <li class="page-item"><a class="page-link" href="#">5</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">
+              next <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
