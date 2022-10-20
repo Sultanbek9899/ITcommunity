@@ -8,9 +8,14 @@
       <div class="row g-2 align-items-center">
         <div class="col">
           <h2 class="page-title">
+
             Результаты поиска по запросу:
           </h2>
           <div class="text mt-1">{{ search_text }}</div>
+          <h3>
+            Подписки: {{ request.user.following_count }}
+            Подписчики: {{ request.user.followers_count }}
+          </h3>
         </div>
         <!-- Page title actions -->
         <div class="col-12 col-md-auto ms-auto d-print-none">
@@ -39,18 +44,29 @@
               {% endif %}
               <h3 class="m-0 mb-1"><a href="#">{{ user.username }}</a></h3>
               <div class="text">{{ user.full_name }}</div>
+              <div class="text">Подписки: {{ user.following_count }}</div>
+              <div class="text">Подпичсики: {{ user.followers_count }} </div>
               <div class="mt-3">
               </div>
             </div>
             <div class="d-flex">
-              <a href="#" class="btn btn-success w-50"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+              {% if request.user not in user.followers.all %}
+              <a href="{% url 'follow' user.pk %}" class="btn btn-success w-50"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checkbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <polyline points="9 11 12 14 20 6"></polyline>
                     <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
                  </svg>
-                Подписаться </a>
-              <a href="#" class="btn btn-info w-50"><!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                Подписаться 
+              </a>
+              {% else %}
+              <a href="{% url 'unfollow' user.pk %}" class="btn btn-danger">
+                Отписаться
+              </a>
+              {% endif %}
+
+              
+              <a href="{% url 'user_profile_detail' user.pk %}" class="btn btn-info w-50"><!-- Download SVG icon from http://tabler-icons.io/i/phone -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-address-book" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z"></path>

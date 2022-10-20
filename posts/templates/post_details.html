@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block style_css %}
+  <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+
+{% endblock %}
+
+
 
 {% block content %}
 
+{% if post.author == request.user %}
 <div class="container-xl">
     <!-- Page title -->
     <div class="page-header d-print-none">
@@ -43,20 +52,105 @@
       </div>
     </div>
 </div>
+{% endif %}
 
 <div class="page-body">
   <div class="container-xl">
       <div class="content">
-        <div class="w-50">
-          <div class="card mb-3">
-            <img src="{{ post.image.url }}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">{{post.author.username }}</h5>
-              <p class="card-text">{{post.description }}</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<div class="container bootstrap snippets bootdey">
+    <di class="col-md-8">
+        <div class="col-sm-12">
+            <div class="panel panel-white post panel-shadow">
+                <div class="post-heading">
+                    <div class="pull-left image">
+                      {% if post.author.avatar %}
+                      <img src="{{post.author.avatar.url }}" class="img-circle avatar" alt="user profile image">
+                      {% else %}
+                      <img src="/static/img/icons/user_profile.png" alt="" class="image-circle avatar">
+                      {% endif %}
+                    </div>
+                    <div class="pull-left meta">
+                        <div class="title h5">
+                            <a href="#"><b>{{post.author.username }}</b></a>
+                        </div>
+                        <h6 class="text-muted time">5 seconds ago</h6>
+                    </div>
+                </div>
+                <div class="post-image">
+                    <img src="{{ post.image.url }}" class="image" alt="image post">
+                </div>
+                <div class="post-description">
+                    <p>{{ post.description }}</p>
+                    
+                    <div class="stats">
+                      <div class="ms-auto d-flex">
+                      {% if request.user in post.likes.all %}
+                      <a href="{% url 'unlike_post' post.id %}" class="ms-3 text-muted">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled text-red"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        {{ post.likes.count }}
+                      </a>
+                      {% else %}
+                      <a href="{% url 'like_post' post.id %}" class="ms-3 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+    
+                        {{ post.likes.count }}
+                      </a>
+                      {% endif %}
+                        <div class="text-muted d-flex" style="margin-left:10px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"></path>
+                            <line x1="12" y1="12" x2="12" y2="12.01"></line>
+                            <line x1="8" y1="12" x2="8" y2="12.01"></line>
+                            <line x1="16" y1="12" x2="16" y2="12.01"></line>
+                         </svg>
+                            {{post.post_comments.count}}
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="post-footer">
+                      <div class="text-muted">
+                        Количество: {{ post.post_comments.count }}
+                      </div>
+                      <form action="{% url 'create_comment' post.id %}" method="post">
+                        {% csrf_token %}
+                        {{comment_form}}
+                        <button class="btn btn-primary w-15" type="submit">
+                          Опубликовать
+                        </button>
+                      </form>
+                     
+                    <ul class="comments-list">
+
+                      {% for comment in post.post_comments.all %}
+                        <li class="comment">
+
+                            <a class="pull-left" href="#">
+                              {% if comment.author.avatar %}
+                              <img class="avatar" src="{{comment.author.avatar.url }}" alt="avatar">
+                              {% else %}
+                              <img src="/static/img/icons/user_profile.png" alt="" class="avatar">
+                              {% endif %} 
+                            </a>
+                            <div class="comment-body">
+                                <div class="comment-heading">
+                                    <h4 class="user">{{ comment.author.username }}</h4>
+                                    <h5 class="time">10 seconds ago</h5>
+                                </div>
+                                <p> {{ comment.content }} </p>
+                            </div>
+                        </li>
+                      {% endfor %}
+
+                    </ul>
+                </div>
             </div>
-          </div>
         </div>
+    </di>
+</div>
       </div>
 
   </div>

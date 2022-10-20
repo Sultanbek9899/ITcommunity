@@ -1,11 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if messages %}
+    <ul>
+    
+        {% for message in messages %}
+        
+        <li {%if message.tags%}class="alert alert-{{message.tags}}"{%endif%}> 
+            {{message}} 
+        </li>
+
+        {% endfor %}
+    
+    </ul>
+{% endif %}
+
+
 <h3>Этот текст из index.html</h3>
 
 {% endblock %}
 
-
-{% block text %}
-<h3>Этот текст тоже из index.html </h3>
-{% endblock %}

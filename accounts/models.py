@@ -13,6 +13,7 @@ class User(AbstractUser):
     )
     birthday = models.DateField("Дата рождения", null=True)
     phone = models.CharField("Номер телефона", max_length=14,null=True)
+    following = models.ManyToManyField("self", blank=True, null=True, related_name="followers", symmetrical=False)
 
     class Meta:
         verbose_name = "Пользователь"
@@ -26,18 +27,12 @@ class User(AbstractUser):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+    @property
+    def followers_count(self):
+        count=self.followers.all().count()
+        return count
 
-
-class Follow(models.Model):
-    to_user = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE)
-    from_user = models.ForeignKey(User, related_name="follows", on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = "Подписка"
-        verbose_name_plural = "Подписки"
-        ordering = ["-created"]
-
-    def __str__(self):
-        return f"{self.from_user} подписался на {self.to_user}" 
-
+    @property
+    def following_count(self):
+        return self.following.count()
+                

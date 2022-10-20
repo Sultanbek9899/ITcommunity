@@ -1,8 +1,13 @@
-from django.shortcuts import render, redirect
-from django.views.generic import FormView, CreateView, UpdateView, ListView
+from distutils.log import Log
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.generic import FormView, CreateView, UpdateView, ListView, DetailView
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+from django.contrib import messages
+
 
 from accounts.forms import LoginForm, UserRegisterForm, UserUpdateForm
 from accounts.models import User
@@ -65,3 +70,33 @@ class UsersSearchListView(ListView):
         context = super().get_context_data(**kwargs)
         context["search_text"] = self.request.GET.get("query")
         return context
+
+
+
+class FollowUser(LoginRequiredMixin, View):
+
+
+    def get(self, request, user_pk):
+        from_user = request.user
+        to_user = get_object_or_404(User, pk=user_pk)
+        if from_user not in to_user.followers.all():
+            messages.add_message(request, messages.SUCCESS, "Вы успешно подписались")
+            to_user.followers.add(from_user)
+        return redirect("index")
+
+
+class UnfollowUser(LoginRequiredMixin, View):
+
+    def get(self, request, user_pk):
+        from_user = request.user
+        to_user = get_object_or_404(User, pk=user_pk)
+        if from_user in to_user.followers.all():
+            to_user.followers.remove(from_user)
+        return redirect("index")
+
+
+
+class UserProfileView(LoginRequiredMixin, DetailView ):
+    template_name = "user_profile.html"
+    model = User
+    queryset = User.objects.all()
