@@ -20,19 +20,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12 col-md-4 px-4">
-          <div class="list-group list-group-transparent mb-3 ml-3">
-            <a class="list-group-item list-group-item-action d-flex align-items-center active"
-              href="#">
-              Редактирование профиля
-            </a>
-            <a class="list-group-item list-group-item-action d-flex align-items-center"
-              href="#">
-              Мои данные       
-            </a>
-          </div>
-        </div>
+        {% include 'profile_menu_inc.html' %}
         <div class="col-12 col-md-8">
           <div class="row">
             <div class="col-12">
@@ -41,9 +29,59 @@
                   <h3 class="card-title">Account</h3>
                 </div>
                 <div class="card-body">
+                  {% if form.instance.avatar %}
+                    <img src="{{form.instance.avatar.url}}" alt="" 
+                    style="width: 100px; height: 100px; object-fit: cover;">
+                  {% endif %}
                   <form method="post" enctype="multipart/form-data">
                       {% csrf_token %}
-                      {{ form }}
+                   
+                          <div class="form-row">
+                             <div class="form-group col-md-6">
+                              <label >Изображение профиля: </label>
+                              {{form.avatar}}  
+                              
+                             </div>
+                             <div class="form-group col-md-6"> 
+                              <label> Электронная почта: </label>
+                                {{form.email}}
+                             </div>
+                          </div>
+
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <label> Имя: </label>
+                              {{form.first_name }}
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label> Фамилия: </label>
+                              {{ form.last_name }}
+                            </div>
+                          </div>
+
+                          <div class="form-row">
+                            <div class="form-group col-md-3">
+                              <label> Мобильный телефон: </label>
+                              {{form.phone}}
+                            </div>
+                            <div class="form-group col-md-3">
+                              <label> Дата рождения: </label>
+                              {{form.birthday}}
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <label class="form-check form-check-single form-switch">
+                                
+                                
+                                {{form.is_private}}
+                                <span class="form-check-label">Приватный аккаунт</span>
+                              </label>
+                              
+                          </div>
+                          </div>
+
+              
                       <button type="submit" class="btn btn-primary">
                           Сохранить изменения
                       </button>

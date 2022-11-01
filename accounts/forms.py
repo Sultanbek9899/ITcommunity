@@ -1,6 +1,5 @@
-from operator import attrgetter
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 
 from accounts.models import User
 
@@ -71,6 +70,7 @@ class UserUpdateForm(forms.ModelForm):
             "last_name",
             "birthday",
             "phone",
+            "is_private"
         )
         widgets = {
             "avatar": forms.FileInput(
@@ -86,12 +86,25 @@ class UserUpdateForm(forms.ModelForm):
                 attrs={"class":"form-control"}
             ),
             "birthday": forms.DateInput(
-                attrs ={"class":"form-control", "type":"date"}
+                attrs ={"class":"form-control", "type":"date"},
+                format=("%Y-%m-%d") 
             ),
             "phone": forms.TextInput(
                 attrs={"class":"form-control"}
+            ),
+            "is_private": forms.CheckboxInput(
+                attrs={
+                    "class":"form-check-input", 
+                }
             )   
+
         }
 
 
 
+
+class UserPasswordChangeForm(SetPasswordForm):
+    class Meta:
+        model = User
+        fields = ["new_password1", "new_password2"]
+        

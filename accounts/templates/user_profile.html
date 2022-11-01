@@ -49,33 +49,10 @@
               </div>
             </div>
           </div>
-          <div class="card mb-4 mb-lg-0">
-            <div class="card-body p-0">
-              <ul class="list-group list-group-flush rounded-3">
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fas fa-globe fa-lg text-warning"></i>
-                  <p class="mb-0">https://mdbootstrap.com</p>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fab fa-github fa-lg" style="color: #333333;"></i>
-                  <p class="mb-0">mdbootstrap</p>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
-                  <p class="mb-0">@mdbootstrap</p>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
-                  <p class="mb-0">mdbootstrap</p>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
-                  <p class="mb-0">mdbootstrap</p>
-                </li>
-              </ul>
-            </div>
-          </div>
+
         </div>
+        
+        {% if not object.is_private or request.user in object.followers.all %}
         <div class="col-lg-8">
           <div class="card mb-4">
             <div class="card-body">
@@ -133,6 +110,29 @@
 
 
         </div>
+        {% else %}
+            <div class="col-lg-8">
+                <div class="card ">
+                  <div class="card-body">
+                    <div class="text-center text-muted">
+                        <p>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                            <circle cx="12" cy="16" r="1"></circle>
+                            <path d="M8 11v-4a4 4 0 0 1 8 0v4"></path>
+                         </svg>
+                          Это закрытый аккаунт
+                        </p>
+                        <p>
+                          Подпишитесь на этот аккаунт, чтобы смотреть публикуемые здесь фото.
+                        </p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        {% endif %}
+
       </div>
     </div>
   </section>

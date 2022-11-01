@@ -14,6 +14,8 @@ class User(AbstractUser):
     birthday = models.DateField("Дата рождения", null=True)
     phone = models.CharField("Номер телефона", max_length=14,null=True)
     following = models.ManyToManyField("self", blank=True, null=True, related_name="followers", symmetrical=False)
+    is_private = models.BooleanField("Закрытый аккаунт", default=False)
+
 
     class Meta:
         verbose_name = "Пользователь"

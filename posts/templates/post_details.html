@@ -59,8 +59,8 @@
       <div class="content">
         <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 <div class="container bootstrap snippets bootdey">
-    <di class="col-md-8">
-        <div class="col-sm-12">
+   
+        <div class="col-md-auto" >
             <div class="panel panel-white post panel-shadow">
                 <div class="post-heading">
                     <div class="pull-left image">
@@ -78,7 +78,8 @@
                     </div>
                 </div>
                 <div class="post-image">
-                    <img src="{{ post.image.url }}" class="image" alt="image post">
+                    <img src="{{ post.image.url }}" class="image" alt="image post"
+                    width="height:200px;">
                 </div>
                 <div class="post-description">
                     <p>{{ post.description }}</p>
@@ -112,9 +113,6 @@
                     </div>
                 </div>
                 <div class="post-footer">
-                      <div class="text-muted">
-                        Количество: {{ post.post_comments.count }}
-                      </div>
                       <form action="{% url 'create_comment' post.id %}" method="post">
                         {% csrf_token %}
                         {{comment_form}}
@@ -150,7 +148,7 @@
             </div>
         </div>
     </di>
-</div>
+
       </div>
 
   </div>
